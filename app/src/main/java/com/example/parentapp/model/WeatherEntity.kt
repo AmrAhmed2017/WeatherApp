@@ -8,11 +8,8 @@ import androidx.room.PrimaryKey
 data class WeatherEntity(
 
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    @ColumnInfo(name = "city_id") var cityId: Int,
+    @ColumnInfo(name = "city_id") var cityId: Long,
     @ColumnInfo(name = "timestamp") var timestamp: String,
     @ColumnInfo(name = "min") var minTemp: String,
     @ColumnInfo(name = "max") var maxTemp: String,
 )
-//{
-//    constructor(cityId: Int, timestamp: String, minTemp: String, maxTemp: String) : this(Int.MIN_VALUE, cityId, timestamp, minTemp, maxTemp)
-//}

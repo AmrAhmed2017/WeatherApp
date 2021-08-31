@@ -7,5 +7,14 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.parentapp.view.mainfragment.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_forecastFragment"
+            app:destination="@id/forecastFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="com.example.parentapp.view.forecastfragment.ForecastFragment"
+        android:label="ForecastFragment" />
+
 </navigation>
