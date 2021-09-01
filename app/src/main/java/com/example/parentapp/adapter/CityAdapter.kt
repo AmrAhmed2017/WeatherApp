@@ -43,7 +43,7 @@ class CityAdapter(val data: List<PopulateObject>, private val onItemClicked: (In
             binding.apply {
                 id = item.id
                 binding.cityTextView.text = item.cityName
-                binding.tempTextView.text = item.minTemp + " / " + item.maxTemp
+                binding.tempTextView.text = item.minTemp + "/" + item.maxTemp
             }
         }
 

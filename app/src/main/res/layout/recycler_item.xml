@@ -5,12 +5,20 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/oval_shape"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="18dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/city_text_view"
+            android:textSize="@dimen/large_text_size"
+            android:textColor="@color/light_blue_800"
+            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -19,8 +27,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/temp_text_view"
+            android:textSize="@dimen/large_text_size"
+            android:textColor="@color/light_blue_800"
+            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/degree"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/degree"
+            android:textSize="12sp"
+            android:text="@string/o"
+            android:textColor="@color/light_blue_800"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/temp_text_view"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

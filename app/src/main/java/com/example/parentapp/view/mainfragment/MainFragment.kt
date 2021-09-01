@@ -26,7 +26,6 @@ import com.example.parentapp.R
 import com.example.parentapp.adapter.CityAdapter
 import com.example.parentapp.databinding.FragmentMainBinding
 import com.example.parentapp.model.PopulateObject
-import com.example.parentapp.utils.RecyclerItemDecoration
 import com.example.parentapp.utils.SwipeToDeleteCallback
 import com.example.parentapp.viewmodel.WeatherViewModel
 
@@ -52,7 +51,6 @@ class MainFragment : Fragment(), LocationListener {
 
         viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
         binding.citiesRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.citiesRecyclerView.addItemDecoration(RecyclerItemDecoration(16))
 
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -70,8 +68,10 @@ class MainFragment : Fragment(), LocationListener {
         binding.searchBtn.setOnClickListener {
             if (binding.searchEditView.text.toString().trim().isEmpty())
                 Toast.makeText(this.requireContext(), getString(R.string.search_area_is_empty), Toast.LENGTH_LONG).show()
-            else
+            else{
                 viewModel.fetchDataFromAPIByCityName(binding.searchEditView.text.toString())
+                binding.searchEditView.text = null
+            }
         }
 
         viewModel.countMessage.observe(viewLifecycleOwner, {

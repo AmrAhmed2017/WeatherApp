@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">ParentApp</string>
     <string name="search_area_is_empty">search area is empty, please type city name</string>
+    <string name="search">search</string>
+    <string name="search_for_city_forecast">Search for city forecast</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="description">Description</string>
+    <string name="km_h">Km/h</string>
+    <string name="o">o</string>
 </resources>

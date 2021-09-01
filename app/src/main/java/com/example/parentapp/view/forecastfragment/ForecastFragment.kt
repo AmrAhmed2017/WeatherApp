@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.parentapp.R
 import com.example.parentapp.adapter.WeatherAdapter
 import com.example.parentapp.databinding.FragmentForecastBinding
-import com.example.parentapp.utils.RecyclerItemDecoration
+import com.example.parentapp.mapper.FutureWeatherMapper
 import com.example.parentapp.viewmodel.WeatherViewModel
 
 class ForecastFragment : Fragment() {
@@ -39,10 +39,12 @@ class ForecastFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.weatherRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.weatherRecyclerView.addItemDecoration(RecyclerItemDecoration(8))
 
         viewModel.forecastLiveData.observe(viewLifecycleOwner, {
-            binding.weatherRecyclerView.adapter = WeatherAdapter(it)
+            val weatherEntities = it.map {
+                return@map FutureWeatherMapper.selfMap(it)
+            }
+            binding.weatherRecyclerView.adapter = WeatherAdapter(weatherEntities)
         })
     }
 }

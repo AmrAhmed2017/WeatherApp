@@ -12,4 +12,8 @@ data class WeatherEntity(
     @ColumnInfo(name = "timestamp") var timestamp: String,
     @ColumnInfo(name = "min") var minTemp: String,
     @ColumnInfo(name = "max") var maxTemp: String,
+    @ColumnInfo(name = "pressure") var pressure: String,
+    @ColumnInfo(name = "humidity") var humidity: String,
+    @ColumnInfo(name = "wind_speed") var windSpeed: String,
+    @ColumnInfo(name = "description") var weatherDescription: String
 )

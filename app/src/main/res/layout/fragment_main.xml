@@ -4,32 +4,47 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/blue_sky">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_edit_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="7"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:hint="@string/search_for_city_forecast"
+            android:textColorHint="@color/purple_700"
+            android:textColor="@color/purple_700"
+            android:background="@drawable/oval_shape"
+            android:layout_margin="16dp"
+            android:textSize="@dimen/text_size"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/search_btn"
-            android:text="search"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/search_edit_view"/>
+            android:text="@string/search"
+            android:letterSpacing="0"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_size"
+            app:cornerRadius="10dp"
+            app:iconGravity="end"
+            android:layout_marginEnd="16dp"
+            app:icon="@drawable/ic_baseline_arrow_forward_24"
+            app:layout_constraintEnd_toEndOf="@id/search_edit_view"
+            app:layout_constraintTop_toTopOf="@id/search_edit_view"
+            app:layout_constraintBottom_toBottomOf="@id/search_edit_view"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cities_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_edit_view"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/search_edit_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

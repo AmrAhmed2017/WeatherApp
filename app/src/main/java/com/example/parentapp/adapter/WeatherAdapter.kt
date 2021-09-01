@@ -36,7 +36,11 @@ class WeatherAdapter(val data: List<WeatherEntity>): RecyclerView.Adapter<Weathe
             binding.apply {
 
                 binding.dayTextView.text = item.timestamp
-                binding.tempTextView.text = item.minTemp + " / " + item.maxTemp
+                binding.tempTextView.text = item.minTemp + "/" + item.maxTemp
+                binding.pressureTextValue.text = item.pressure
+                binding.humidityTextValue.text = item.humidity
+                binding.windTextValue.text = item.windSpeed
+                binding.descTextValue.text = item.weatherDescription
             }
         }
     }
