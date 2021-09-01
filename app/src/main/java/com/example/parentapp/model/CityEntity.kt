@@ -11,8 +11,4 @@ class CityEntity(
     @ColumnInfo(name = "city_name") var cityName: String,
     @ColumnInfo(name = "lat") var latitude: String,
     @ColumnInfo(name = "long") var longitude: String,
-
 )
-//{
-//    constructor(cityName: String, latitude: String, longitude: String) : this(Int.MIN_VALUE, cityName, latitude, longitude)
-//}

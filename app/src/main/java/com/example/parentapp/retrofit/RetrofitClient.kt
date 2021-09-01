@@ -18,7 +18,6 @@ class RetrofitClient {
 
     fun getRetrofitClient(): ApiInterface{
 
-//        val baseURL = "https://api.openweathermap.org"
         val offlineInterceptor = Interceptor { chain ->
             var request = chain.request()
             if (!isInternetAvailable()) {

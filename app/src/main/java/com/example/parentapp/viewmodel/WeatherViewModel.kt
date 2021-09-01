@@ -12,7 +12,6 @@ import com.example.parentapp.model.PopulateObject
 import com.example.parentapp.model.WeatherEntity
 import com.example.parentapp.repo.DataRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -27,7 +26,7 @@ class WeatherViewModel : ViewModel() {
     var countMessage = MutableLiveData<String>()
 
     init {
-        weatherLiveData.setValue(getDataFromDatabase())
+        weatherLiveData.value = getDataFromDatabase()
     }
 
     fun fetchDataFromAPIByCityName(cityName: String) {
@@ -102,12 +101,12 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-    fun fetchDataFromAPIByCityNameAtDefaultMode(cityName: String = "london") {
+    fun fetchDataFromAPIByCityNameAtDefaultMode() {
 
         viewModelScope.launch(Dispatchers.IO) {
             if (db.cityDao().getCitiesCount() == 0) {
 
-                val response = repo.getWeatherInfoByCityName(cityName)
+                val response = repo.getWeatherInfoByCityName("london")
                 withContext(Dispatchers.Main) {
                     latitude = response.coord.lat
                     longitude = response.coord.lon

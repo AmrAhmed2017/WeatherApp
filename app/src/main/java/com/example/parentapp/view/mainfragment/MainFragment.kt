@@ -93,29 +93,34 @@ class MainFragment : Fragment(), LocationListener {
     private fun getLocation() {
         val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        if (activity?.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            registerForActivityResult(ActivityResultContracts.RequestPermission()){
-                if (it){
-                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        when{
+            !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ->
+                viewModel.fetchDataFromAPIByCityNameAtDefaultMode()
+
+            locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
+                    activity?.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED ->
+                {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+                    locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                }
+
+            locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
+                    activity?.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            -> {
+                registerForActivityResult(ActivityResultContracts.RequestPermission()){
+                    if (it){
                         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
                         locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                    }else{
+                    } else{
                         viewModel.fetchDataFromAPIByCityNameAtDefaultMode()
                     }
-                } else{
-                    viewModel.fetchDataFromAPIByCityNameAtDefaultMode()
-                }
-            }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
-                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-        }else{
-            viewModel.fetchDataFromAPIByCityNameAtDefaultMode()
+                }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         }
     }
 
     override fun onLocationChanged(location: Location) {
-        Log.v("===", "${location.latitude}, ${location.longitude}")
         viewModel.fetchFutureWeatherInfoAtDefaultMode(location.latitude.toString(), location.longitude.toString())
     }
 }

@@ -1,14 +1,11 @@
 package com.example.parentapp.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parentapp.R
-import com.example.parentapp.databinding.RecyclerItemBinding
 import com.example.parentapp.databinding.WeatherRecyclerItemBinding
-import com.example.parentapp.model.PopulateObject
 import com.example.parentapp.model.WeatherEntity
 
 class WeatherAdapter(val data: List<WeatherEntity>): RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {

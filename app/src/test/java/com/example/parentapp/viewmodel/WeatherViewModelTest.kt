@@ -1,14 +1,7 @@
 package com.example.parentapp.viewmodel
 
-import com.example.parentapp.repo.DataRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
-import org.junit.After
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
-import org.mockito.Mockito.mock
 
 @ExperimentalCoroutinesApi
 class WeatherViewModelTest{
