@@ -1,5 +1,6 @@
 package com.example.parentapp.mapper
 
+import android.annotation.SuppressLint
 import com.example.parentapp.model.DailyWeather
 import com.example.parentapp.model.WeatherEntity
 import java.text.SimpleDateFormat
@@ -31,6 +32,7 @@ object FutureWeatherMapper {
 
     private fun convertTempToCelsius(temp: String) = truncate(temp.toDouble() - 273.15).toInt().toString()
 
+    @SuppressLint("SimpleDateFormat")
     private fun convertTimestampToDate(temp: String): String{
         val sdf = SimpleDateFormat("EEE dd/MM/yyyy")
         val date = Date(temp.toLong() * 1000)

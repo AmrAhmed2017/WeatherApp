@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.parentapp.database.WeatherDatabase
 import com.example.parentapp.mapper.FutureWeatherMapper
 import com.example.parentapp.model.FutureWeatherResponse
 import com.example.parentapp.model.CityEntity
@@ -13,14 +12,12 @@ import com.example.parentapp.model.WeatherEntity
 import com.example.parentapp.repo.DataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WeatherViewModel : ViewModel() {
 
     private val repo = DataRepository
     private lateinit var latitude: String
     private lateinit var longitude: String
-    private val db = WeatherDatabase.getDatabase()
     var weatherLiveData = MutableLiveData<List<PopulateObject>>()
     var forecastLiveData = MutableLiveData<List<WeatherEntity>>()
     var countMessage = MutableLiveData<String>()
@@ -33,17 +30,17 @@ class WeatherViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             when {
-                db.cityDao()
-                    .getCitiesCount() >= 5 -> countMessage.postValue("The list contains 5 cities")
-                db.cityDao().searchForCityName(cityName.lowercase())
+                repo.getCitiesCount() >= 5 -> countMessage.postValue("The list contains 5 cities")
+                repo.searchForCityName(cityName.lowercase())
                     .isNotEmpty() -> countMessage.postValue("The list already contains this city")
                 else -> {
                     val response = repo.getWeatherInfoByCityName(cityName)
-                    withContext(Dispatchers.Main) {
-                        latitude = response.coord.lat
-                        longitude = response.coord.lon
-                    }
-                    fetchFutureWeatherInfo(latitude, longitude)
+                        response.data?.let {
+                            latitude = it.coord.lat
+                            longitude = it.coord.lon
+                            fetchFutureWeatherInfo(latitude, longitude)
+                        } ?: countMessage.postValue(response.message!!)
+
                 }
             }
         }
@@ -52,9 +49,10 @@ class WeatherViewModel : ViewModel() {
     private fun fetchFutureWeatherInfo(lat: String, long: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getNextWeatherInfo(lat, long).apply {
-                saveResponseToDatabase(this)
-            }
+            val response = repo.getNextWeatherInfo(lat, long)
+                response.data?.let {
+                saveResponseToDatabase(it)
+            } ?: countMessage.postValue(response.message!!)
         }
     }
 
@@ -63,14 +61,14 @@ class WeatherViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            val cityId = db.cityDao().insertNewCity(
+            val cityId = repo.insertNewCity(
                 CityEntity(cityName = futureWeatherResponse.timezone.substringAfter('/').lowercase(), latitude = futureWeatherResponse.lat,
                     longitude = futureWeatherResponse.lon)
             )
             val weatherEntities = futureWeatherResponse.daily.subList(0, 5).map {
                 return@map FutureWeatherMapper.map(it, cityId)
             }
-            db.weatherDao().insertNewWeather(weatherEntities)
+            repo.insertNewWeather(weatherEntities)
             weatherLiveData.postValue(getDataFromDatabase())
         }
     }
@@ -78,9 +76,9 @@ class WeatherViewModel : ViewModel() {
     private fun getDataFromDatabase(): List<PopulateObject> {
         val citiesForecast = ArrayList<PopulateObject>()
         viewModelScope.launch(Dispatchers.IO) {
-            val cities = db.cityDao().getAllCities()
+            val cities = repo.getAllCities()
             cities.map {
-                val currentWeather = db.weatherDao().selectWeather(it.id)
+                val currentWeather = repo.selectWeather(it.id)
                 citiesForecast.add(
                     PopulateObject(
                         id = it.id, cityName = it.cityName, minTemp = currentWeather.minTemp,
@@ -95,8 +93,8 @@ class WeatherViewModel : ViewModel() {
     fun deleteSwipedItem(cityId: Int){
         viewModelScope.launch(Dispatchers.IO){
 
-            db.cityDao().deleteCity(cityId)
-            db.weatherDao().deleteWeather(cityId)
+            repo.deleteCity(cityId)
+            repo.deleteWeather(cityId)
             weatherLiveData.postValue(getDataFromDatabase())
         }
     }
@@ -104,14 +102,14 @@ class WeatherViewModel : ViewModel() {
     fun fetchDataFromAPIByCityNameAtDefaultMode() {
 
         viewModelScope.launch(Dispatchers.IO) {
-            if (db.cityDao().getCitiesCount() == 0) {
-
+            if (repo.getCitiesCount() == 0) {
                 val response = repo.getWeatherInfoByCityName("london")
-                withContext(Dispatchers.Main) {
-                    latitude = response.coord.lat
-                    longitude = response.coord.lon
-                }
-                fetchFutureWeatherInfo(latitude, longitude)
+                    response.data?.let {
+                        latitude = it.coord.lat
+                        longitude = it.coord.lon
+                        fetchFutureWeatherInfo(latitude, longitude)
+
+                    } ?: countMessage.postValue(response.message!!)
 
             }
         }
@@ -120,16 +118,18 @@ class WeatherViewModel : ViewModel() {
     fun fetchFutureWeatherInfoAtDefaultMode(lat: String, long: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            if (db.cityDao().getCitiesCount() == 0) {
+            if (repo.getCitiesCount() == 0) {
                 val response = repo.getNextWeatherInfo(lat, long)
-                saveResponseToDatabase(response)
+                response.data?.let {
+                    saveResponseToDatabase(it)
+                } ?: countMessage.postValue(response.message!!)
             }
         }
     }
 
     fun getWeatherForecast(cityId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val weather = db.weatherDao().selectWeathers(cityId)
+            val weather = repo.selectWeathers(cityId)
             forecastLiveData.postValue(weather)
         }
     }

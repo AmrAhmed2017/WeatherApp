@@ -12,11 +12,11 @@ interface WeatherDao {
     suspend fun insertNewWeather(weatherEntities: List<WeatherEntity>)
 
     @Query("DELETE FROM weather_table WHERE city_id = :cityId")
-    fun deleteWeather(cityId: Int)
+    suspend fun deleteWeather(cityId: Int)
 
     @Query("SELECT * FROM weather_table WHERE city_id = :cityId")
-    fun selectWeathers(cityId: Int): List<WeatherEntity>
+    suspend fun selectWeathers(cityId: Int): List<WeatherEntity>
 
     @Query("SELECT * FROM weather_table WHERE city_id = :cityId ORDER BY timestamp ASC limit 1")
-    fun selectWeather(cityId: Int): WeatherEntity
+    suspend fun selectWeather(cityId: Int): WeatherEntity
 }

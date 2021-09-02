@@ -39,9 +39,21 @@ class WeatherDaoTest {
     @Test
     fun insertNewWeather_andCheckExist() = runBlockingTest {
 
-        val weatherEntity = WeatherEntity(id = 1, cityId = 1, timestamp = "123456", minTemp = "12", maxTemp = "24")
+        val weatherEntity = WeatherEntity(id = 1, cityId = 1, timestamp = "123456", minTemp = "12",
+            maxTemp = "24", pressure = "15", humidity = "20", windSpeed = "13.5", weatherDescription = "cloud")
         weatherDao.insertNewWeather(listOf(weatherEntity))
         val weather = weatherDao.selectWeathers(1)
         assertThat(weather).contains(weatherEntity)
+    }
+
+    @Test
+    fun deleteExistWeather_andCheckDeletion() = runBlockingTest {
+
+        val weatherEntity = WeatherEntity(id = 1, cityId = 1, timestamp = "123456", minTemp = "12",
+            maxTemp = "24", pressure = "15", humidity = "20", windSpeed = "13.5", weatherDescription = "cloud")
+        weatherDao.insertNewWeather(listOf(weatherEntity))
+        weatherDao.deleteWeather(1)
+        val weather = weatherDao.selectWeathers(1)
+        assertThat(weather).doesNotContain(weatherEntity)
     }
 }

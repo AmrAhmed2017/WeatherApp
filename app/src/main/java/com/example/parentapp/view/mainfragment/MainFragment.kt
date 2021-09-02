@@ -75,8 +75,13 @@ class MainFragment : Fragment(), LocationListener {
         }
 
         viewModel.countMessage.observe(viewLifecycleOwner, {
-            AlertDialog.Builder(this.requireContext()).setTitle("warning").setMessage(it).
-                    setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }.create().show()
+            it?.let {
+                AlertDialog.Builder(this.requireContext()).setTitle("warning").setMessage(it).
+                setPositiveButton("Ok") { dialog, _ ->
+                    dialog.dismiss()
+                    viewModel.countMessage.value = null
+                }.create().show()
+            }
         })
 
         viewModel.weatherLiveData.observe(viewLifecycleOwner, {

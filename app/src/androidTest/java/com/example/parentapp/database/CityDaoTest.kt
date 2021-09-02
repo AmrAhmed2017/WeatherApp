@@ -46,4 +46,28 @@ class CityDaoTest {
         val allCities = cityDao.getAllCities()
         assertThat(allCities[0].id).isEqualTo(cityEntity.id)
     }
+
+    @Test
+    fun testCount_andCheckNumber() = runBlockingTest {
+
+        val cityEntity1 = CityEntity(id = 1, cityName = "cairo", latitude = "30", longitude = "31")
+        val cityEntity2 = CityEntity(id = 2, cityName = "cairo", latitude = "30", longitude = "31")
+        val cityEntity3 = CityEntity(id = 3, cityName = "cairo", latitude = "30", longitude = "31")
+        cityDao.insertNewCity(cityEntity1)
+        cityDao.insertNewCity(cityEntity2)
+        cityDao.insertNewCity(cityEntity3)
+        val count = cityDao.getCitiesCount()
+        assertThat(count).isEqualTo(3)
+    }
+
+    @Test
+    fun deleteExistCity_andCheckDeletion() = runBlockingTest {
+
+        val cityEntity = CityEntity(id = 1, cityName = "cairo", latitude = "30", longitude = "31")
+        cityDao.insertNewCity(cityEntity)
+        cityDao.deleteCity(1)
+        val allCities = cityDao.getAllCities()
+        assertThat(allCities).doesNotContain(cityEntity)
+    }
+
 }
