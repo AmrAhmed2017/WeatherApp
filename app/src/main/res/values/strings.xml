@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ParentApp</string>
+    <string name="app_name">WeatherApp</string>
     <string name="search_area_is_empty">search area is empty, please type city name</string>
     <string name="search">search</string>
     <string name="search_for_city_forecast">Search for city forecast</string>
@@ -10,4 +10,5 @@
     <string name="km_h">Km/h</string>
     <string name="o">o</string>
     <string name="appwidget_text">EXAMPLE</string>
+    <string name="temp">%s / %s</string>
 </resources>

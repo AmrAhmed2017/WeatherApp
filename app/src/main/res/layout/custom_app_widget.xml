@@ -5,7 +5,7 @@
     android:background="@drawable/blue_sky"
     android:padding="@dimen/widget_margin"
     android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.ParentApp.AppWidgetContainer">
+    android:theme="@style/ThemeOverlay.WeatherApp.AppWidgetContainer">
 
     <TextView
         android:id="@+id/city_text"

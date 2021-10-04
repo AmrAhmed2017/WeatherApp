@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.parentapp"
+        applicationId "com.example.weatherapp"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
@@ -27,7 +27,6 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org\"")
             buildConfigField("String", "APP_ID", "\"16e7e247c281a2ec07372e8191489354\"")
         }
-
         buildFeatures {
             dataBinding true
         }
